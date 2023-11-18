@@ -1,5 +1,10 @@
 # 深度强化学习算法系列（理论学习 & 动手实践 2023-11-18 ～ 至今）
 
+## 学习资源
+- course: hugging face <https://huggingface.co/learn/deep-rl-course>
+- book: <http://incompleteideas.net/book/RLbook2020.pdf>
+
+
 ## 学习目标
 ### 课程学习目标(<https://huggingface.co/learn/deep-rl-course>)
 - [ ] 在理论学习和实践中学习深度强化学习算法
