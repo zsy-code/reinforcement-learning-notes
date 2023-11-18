@@ -1,7 +1,7 @@
 # 深度强化学习算法系列（理论学习 & 动手实践 2023-11-18 ～ 至今）
 
 ## 学习目标
-### 课程学习目标
+### 课程学习目标(<https://huggingface.co/learn/deep-rl-course>)
 - [] 在理论学习和实践中学习深度强化学习算法
 - [] 学习使用一些比较有名的深度强化学习库(Stable Baseline3, RL Baseline3 Zoo, Sample Factory, CleanRL)
 - [] 在一些特别环境下训练智能体/代理(SnowballFight, Huggy the Doggo, VizDoom(Doom), 以及一些经典的环境比如 Space Invaders, Pybullet等)
