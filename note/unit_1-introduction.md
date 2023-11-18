@@ -23,4 +23,31 @@
 > - 强化学习是一种通过构建能够与环境进行交互、通过试错并获得正负反馈奖励而对环境进行学习的智能体,来解决控制任务(也称为决策问题)的框架。
 
 
-在这个框架中,智能体需要决定下一步的操作,以最大化其累积奖励。它不同于监督学习,因为训练数据中不提供正确的序列操作,也不同于非监督学习,因为存在奖励信号来指导学习。通过大量的环境交互,强化学习中的智能体能够逐步提升其策略,以取得更高的累积奖励。因此强化学习非常适合解决顺序决策、自动控制等问题。它已经在游戏、机器人控制、自动驾驶等领域得到成功应用。
+在这个框架中，智能体需要决定下一步的操作，以最大化其累积奖励。它不同于监督学习，因为训练数据中不提供正确的序列操作，也不同于非监督学习，因为存在奖励信号来指导学习。通过大量的环境交互，强化学习中的智能体能够逐步提升其策略，以取得更高的累积奖励。因此强化学习非常适合解决顺序决策、自动控制等问题。它已经在游戏、机器人控制、自动驾驶等领域得到成功应用。
+
+
+## 深度强化学习框架
+
+### 强化学习流程
+
+RL 流程图
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/RL_process.jpg)
+
+更容易理解的图像
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/RL_process_game.jpg)
+
+> **解释如下**
+> - agent 从environment 中接收 **state $S_0$** -- 从游戏中接收第一帧图像
+> - 基于 **state $S_0$**，agent 作出**action $A_0$** -- agent 向右移动
+> - environment 变为新的状态 **state $S_1$** -- 新一帧图像
+> - environment 给agent 提供了一些反馈 **rewards $R_1$** -- agent 没有死亡
+> - 循环上述过程
+
+RL 循环输出序列 state, action, reward, next_state
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/sars.jpg)
+
+agent 的目标是最大化累计奖励，我们称之为预期回报（expected return）
+
+### 奖励条件的设定是强化学习的核心思想
+> The reward hypothesis: the central idea of Reinforcement Learning
+
