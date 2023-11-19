@@ -89,8 +89,6 @@ observation 和 state 之间是有区别的：
 ![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/obs_space_recap.jpg)
 
 
-未来选择 RL 算法的时候考虑这些信息是很必要的
-
 ### 动作空间（Action Scape）
 
 概念：动作空间是环境中所有可能动作的集合
@@ -99,6 +97,54 @@ observation 和 state 之间是有区别的：
 
 - 离散空间（discrete space）：可能的动作数量是有限的（比如马里奥中左右上下四个动作）
 - 连续空间（continuous space）：可能的动作数量是无限的（比如自动驾驶，转弯 $n^\circ $）
+
+**回顾：**
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/action_space.jpg)
+
+
+**未来选择 RL 算法的时候考虑这些信息是很必要的**
+
+### 奖励和折扣（rewards and the discounting）
+
+奖励是 RL 的核心，因为它是给 agent 唯一的反馈，多亏了它，agent 才知道所采取的 action 是好的还是不好的。
+
+每个time step t 的 cumulative rewards 可以写为：
+
+$R(\tau ) = r_{t+1} + r_{t+2} + r_{t+3} + r_{t+4} + \cdots$
+
+> cumulative rewards 等于序列中所有rewards的和
+
+等价于：
+
+$R(\tau ) = \sum_{k=0}^{\infty } r_{t+k+1} $
+
+事实上，我们并不能简单的将它们进行加和，更早获得的奖励(在游戏开始时)更有可能发生,因为它们比长期未来的奖励更可预测
+
+**这是因为随着时间的推移,环境变得更加复杂和不确定。在游戏开始阶段,环境还相对稳定和可控,所以短期内的奖励是可以合理估计的。但是长期后面的奖励依赖于许多不可控因素,是否能获得具有很大不确定性。**
+
+**因此,我们不能简单地认为所有时刻的奖励同等重要,而应该对更早的奖励给予更高的优先级。一般来说,获取近期奖励的行为策略更有可能被强化,而仅基于不确定的远期大奖励采取行动的策略难以得到有效强化。**
+
+**这就是强化学习中需要考虑的“时间差折扣”概念。我们需要对远期奖励进行折扣处理,以反映其不确定性。只有这样,智能体才能在当前行动selection时做出最佳决策。**
+
+举例：我们的agent 是一只老鼠，它的对手是一只猫（可以移动），老鼠每次只能移动一个格子，它的目标是在被猫吃掉之前吃掉尽可能多的奶酪
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/rewards_3.jpg)
+
+如图所示，吃掉距离老鼠最近的奶酪比吃掉猫附近的奶酪有更多的可能性，因为这样距离猫更远更安全，也就更容易获得较多的得分（离猫越近越危险），因此，即使猫附近的奶酪更多（有更高的分数），由于我们不确定是否能够吃掉它，它的分数也就可能会大打折扣。
+
+为了对奖励进行折扣，我们可以这样进行：
+
+1. 我们定义一个折扣率 gamma，它处于0到1之间，大多数时刻位于0.95-0.99之间
+    - 更大的 gamma 意味着更小的 discount，这意味着我们的 agent 关心**更多的长期奖励**
+    - 另一方面，更小的 gamma 意味着更大的 discount，这意味着我们的 agent 关心**更多的短期奖励（最近的奶酪）**
+2. 然后,每个奖励将按时间步长的指数折现 gamma。随着时间步长的增大,猫离我们越来越近,所以未来的奖励发生的可能性越来越小。
+
+discounted 之后的 expected cumulative rewards 就可以写成：
+
+$R(\tau ) = r_{t+1} + \gamma r_{t + 2} + \gamma^2 r_{t+3} + \gamma^3 r_{t+4} + \cdots$
+
+$R(\tau ) = \sum_{k=0}^{\infty } \gamma^k r_{t + k + 1} $
 
 
 
