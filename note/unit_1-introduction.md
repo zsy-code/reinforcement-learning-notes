@@ -38,7 +38,7 @@ RL 流程图
 
 > **解释如下**
 > - agent 从environment 中接收 **state $S_0$** -- 从游戏中接收第一帧图像
-> - 基于 **state $S_0$**，agent 作出**action $A_0$** -- agent 向右移动
+> - 基于 **state $S_0$**，agent 作出 **action $A_0$** -- agent 向右移动
 > - environment 变为新的状态 **state $S_1$** -- 新一帧图像
 > - environment 给agent 提供了一些反馈 **rewards $R_1$** -- agent 没有死亡
 > - 循环上述过程
@@ -50,4 +50,55 @@ agent 的目标是最大化累计奖励，我们称之为预期回报（expected
 
 ### 奖励条件的设定是强化学习的核心思想
 > The reward hypothesis: the central idea of Reinforcement Learning
+
+为什么RL的目标是最大化expected return？
+
+因为RL 是基于奖励假设的，奖励假设的所有目标都可以被描述为最大化expected return（expected cumulative return）
+
+### 马尔可夫属性（Markov property）
+
+在论文中，RL过程通常就被称为马尔可夫决策过程
+
+> The Markov Property implies that our agent needs only the current state to decide what action to take and not the history of all the states and actions they took before
+
+马尔可夫性质意味着 agent 只需要当前的 state 来决定采取什么 action，而不需要之前所有行动和状态的历史
+
+### 观察空间/状态空间（Observations/State Space）
+
+observation/state 是 agent 从 environment 中获取的信息。在一个视频游戏中，它可以是一帧图像或一张截图。在交易agent 中，它可以是股票的价值等。
+
+observation 和 state 之间是有区别的：
+
+- State s: 是对世界状态的完整描述（没有隐藏信息）。在一个完整的被观察到环境中。
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/chess.jpg)
+> 在一个棋类游戏中，我们可以纵观整个棋盘的信息，也就是可以从环境（棋盘）中接收状态，即完整的观察到环境
+
+- Observation o: 是对状态的部分描述，在部分被观察的环境中
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/mario.jpg)
+> 在马里奥中，我们仅能看到关卡中靠近玩家的部分，从而可以收到一个observation
+
+本节课中，使用术语 state 来表示 state 和 observation，但在实际实现中仍然会进行区分
+
+**回顾：**
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/obs_space_recap.jpg)
+
+
+未来选择 RL 算法的时候考虑这些信息是很必要的
+
+### 动作空间（Action Scape）
+
+概念：动作空间是环境中所有可能动作的集合
+
+动作可能来自于离散（discrete）或者连续（continuous）空间
+
+- 离散空间（discrete space）：可能的动作数量是有限的（比如马里奥中左右上下四个动作）
+- 连续空间（continuous space）：可能的动作数量是无限的（比如自动驾驶，转弯 $n^\circ $）
+
+
+
+
+
+
+
 
