@@ -31,9 +31,11 @@
 ### 强化学习流程
 
 RL 流程图
+
 ![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/RL_process.jpg)
 
 更容易理解的图像
+
 ![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/RL_process_game.jpg)
 
 > **解释如下**
@@ -44,6 +46,7 @@ RL 流程图
 > - 循环上述过程
 
 RL 循环输出序列 state, action, reward, next_state
+
 ![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/sars.jpg)
 
 agent 的目标是最大化累计奖励，我们称之为预期回报（expected return）
@@ -75,12 +78,14 @@ observation 和 state 之间是有区别的：
 > 在一个棋类游戏中，我们可以纵观整个棋盘的信息，也就是可以从环境（棋盘）中接收状态，即完整的观察到环境
 
 - Observation o: 是对状态的部分描述，在部分被观察的环境中
+
 ![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/mario.jpg)
 > 在马里奥中，我们仅能看到关卡中靠近玩家的部分，从而可以收到一个observation
 
 本节课中，使用术语 state 来表示 state 和 observation，但在实际实现中仍然会进行区分
 
 **回顾：**
+
 ![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/obs_space_recap.jpg)
 
 
