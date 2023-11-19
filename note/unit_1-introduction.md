@@ -228,5 +228,133 @@ $R(\tau ) = \sum_{k=0}^{\infty } \gamma^k r_{t + k + 1} $
 - 直接的方法是，直接教给 agent 在给定的 state 下采取什么样的 action：基于策略的方法（Policy-Based Methods）
 - 间接的方法是，教给 agent 哪种 state 更有价值，以及采取哪种 action 可以导致更有价值的 state：基于价值的方法（Value-Based Methods）
 
-### 
+### 基于策略的方法（Policy-Based Methods）
 
+在基于策略的方法中，我们直接学习一个策略函数
+
+该函数将定义每个状态到最佳响应动作的映射，或者它可以定义该状态下一组可能动作的概率分布
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/policy_2.jpg)
+
+如图所示，这个策略直接指示每个步骤所要采取的操作
+
+这里有两种类型的策略：
+
+- 确定的（Deterministic）：在给定一个 state 的情况下始终都会返回相同 action 的策略
+
+$a = \pi (s)$
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/policy_2.jpg)
+
+
+- 随机的（Stochastic）：输出 actions 的概率分布
+
+$\pi (a|s) = P(A|s)$
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/policy-based.png)
+
+**回顾：**
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/pbm_1.jpg)
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/pbm_2.jpg)
+
+
+### 基于价值的方法（Value-Based Methods）
+
+在基于价值的方法中，我们不是学习策略函数，而是学习一个价值函数用来将一个状态映射到处于该状态的期望值。
+
+状态的价值是 agent 从这个状态开始根据我们的策略采取行动后所获得的期望折扣回报（expected discounted return）
+
+按照我们的策略采取行动仅仅是意味着去往有更高价值的状态
+
+$v_\pi (s) = \mathbb{E}(R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \cdots | S_t = s) $
+
+可以看到价值函数为每个可能的状态定义了价值
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/value_2.jpg)
+
+依托于价值函数，在每一步该策略都会选择具有最大价值的状态来达到目标：-7 -6 -5 等等
+
+**回顾：**
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/vbm_1.jpg)
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/vbm_2.jpg)
+
+
+## 强化学习中的“深度”（The “Deep” in Reinforcement Learning）
+
+深度强化学习引入了深度神经网络来解决强化学习问题————因此而得名“深度强化学习”
+
+比如将要学到的两个 value-based 算法：Q-Learning（经典强化学习算法） 和 Deep Q-Learning ，它们两个的不同在于，第一个方法中使用一种传统的算法来创建一个 Q 表格，这个表格可以帮助我们找到在每个 state 下应该采取哪种 action；而第二个方法则使用神经网络来近似 Q 值。
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/deep.jpg)
+
+
+## 总结
+
+- 强化学习是一个从 actions 中进行学习的计算方法。我们构建了一个 agent 通过不断的实验和试错以及和 environment 进行交互，获取 rewards（positive or negative）作为 feedback。
+
+- 一切 RL agent 的目标都是为了最大化 expected cumulative reward（也被称为 expected return）因为 RL 是基于奖励假设的，即所有目标都可以描述为最大化期望累积奖励。
+
+- RL 的计算过程是一个输出一个（state，action，reward，new state）的序列的循环。
+
+- 为了计算期望累积奖励（期望回报），我们对 rewards 进行 discount：在游戏开始时更早来到的 rewards 更有可能发生，因为它们相较于更长期的未来回报更可预测。
+
+- 要解决一个 RL 问题，你就要找到一个最优策略。这个策略是 agent 的大脑，它会在给定一个 state 的情况下要采取什么样的 action。最优的策略就是可以提供能够最大化期望回报的 actions 的策略。
+
+- 有两种方法找到最优策略：
+    1. 通过直接训练策略：policy-based methods（基于策略的方法）
+    2. 通过训练一个价值函数，该函数将告诉我们在每个状态下将获得的预期回报，并且用函数来定义我们的策略：value-based methods（基于价值的方法）
+
+- 最后，我们讨论了深度强化学习，因为我们引入了深度神经网络来估计要采取的action（policy-based methods）或者估计一个状态的价值（value-based methods），因此而得名“深度强化学习”。
+
+
+## 概念
+这里是一个术语表
+
+- Agent
+    agent 从实验和试错中学习决策，并伴随着来自周围环境的奖励或者惩罚
+
+- Environment
+    environment 是一个模拟世界，在这里 agent 可以通过与之交互进行学习
+
+- Markov Property
+    这意味着 agent 要采取的 action 仅依赖于当前的 state 而不依赖于过去的 actions & states
+
+- Observation/State
+    1. State：世界状况的完整描述
+    2. Observation：环境或者世界的部分描述
+
+- Actions
+    1. Discrete Actions：有限数量的 actions 例如上、下、左、右
+    2. Continuous Actions：actions 的无限可能性 例如自动驾驶
+
+- Rewards & Discounting
+    1. Rewards：RL的基本要素，告诉 agent 采取的 action 是好是坏
+    2. RL 算法专注于最大化**累积奖励**
+    3. Reward Hypothesis：强化学习问题都可以被表述为（累积）回报的最大化
+    4. Discounting 是因为一开始获得的 rewards 比长期的 rewards 更容易预测
+
+- Tasks
+    1. Episodic：有起始点和终止点
+    2. Continuous：有起始点但是没有终止点
+
+- Exploration v/s Exploitation Trade-Off
+    1. Exploration：一切都是通过尝试随机的 actions 并且通过接收环境中的奖励或反馈来探索环境
+    2. Exploitation：利用我们对环境的了解来获取最大 rewards
+    3. Exploration-Exploitation Trade-Off：它平衡了我们对环境的探索程度和对环境的了解程度
+
+- Policy
+    1. Policy：agent 的大脑，它告诉我们在给定的 state 下要采取什么样的 action
+    2. Optimal Policy：一个 agent 可以依据该策略采取 action 从而最大化 expected return，该策略通过训练学习
+
+- Policy-Based Methods
+    1. 解决 RL 问题的一种方法
+    2. 在这种方法中，policy 可以直接被学习
+    3. 它将每种状态以及该状态下最佳的响应行为进行映射，或者该状态下可能采取的行动集合的概率分布
+
+- Value-Based Methods
+    1. 另一种解决 RL 问题的方法
+    2. 训练一个价值函数而不是一个策略，可以映射每种状态到处于该状态下的期望价值
