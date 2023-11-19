@@ -133,7 +133,7 @@ $R(\tau ) = \sum_{k=0}^{\infty } r_{t+k+1} $
 
 如图所示，吃掉距离老鼠最近的奶酪比吃掉猫附近的奶酪有更多的可能性，因为这样距离猫更远更安全，也就更容易获得较多的得分（离猫越近越危险），因此，即使猫附近的奶酪更多（有更高的分数），由于我们不确定是否能够吃掉它，它的分数也就可能会大打折扣。
 
-为了对奖励进行折扣，我们可以这样进行：
+为了对奖励进行 discount ，我们可以这样进行：
 
 1. 我们定义一个折扣率 gamma，它处于0到1之间，大多数时刻位于0.95-0.99之间
     - 更大的 gamma 意味着更小的 discount，这意味着我们的 agent 关心**更多的长期奖励**
@@ -147,9 +147,86 @@ $R(\tau ) = r_{t+1} + \gamma r_{t + 2} + \gamma^2 r_{t+3} + \gamma^3 r_{t+4} + \
 $R(\tau ) = \sum_{k=0}^{\infty } \gamma^k r_{t + k + 1} $
 
 
+## 任务类型（type of tasks）
+
+任务是强化学习问题的一个实例。我们有两种任务类型：情景型（episodic）和 连续型（continuing）
+
+### 情景型任务（episodic task）
+
+在这种任务中，我们有一个任务起点和终点（最终状态），这将创建一个情景：一个状态列表（a list of States）、动作（Actions）、奖励（Rewards）、新状态（new States）
+
+例如，在马里奥游戏中，一个情景从新的关卡启动开始，到角色死亡或到达终点结束
+
+### 连续型任务（continuing task）
+
+这类任务是持续长久的没有结束状态的任务，在这类任务中，agent 必须学会如何选择最佳的 actions 并同时与 environment 进行交互
+
+例如，一个进行自动股票交易的agent，对于这类任务，没有开始状态和结束状态，它会持续执行直到我们决定停掉它。
+
+**回顾：**
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/tasks.jpg)
+
+## 探索/利用权衡（The Exploration/Exploitation trade-off）
+
+在研究解决RL 的问题之前，必须cover一个非常重要的主题：探索/利用权衡
+
+- 探索（exploration）是通过尝试随机的action来探索environment，从而得到关于environment的更多信息
+- 利用（exploitation）是利用已知的信息来最大化rewords
+
+需要注意的是，RL 的目标是为了最大化累积期望奖励，然而我们经常会陷入一个常见的陷阱
+
+举个例子：
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/exp_1.jpg)
+
+在这个游戏中，老鼠可以有无限个小奶酪（每个加1分），但是在迷宫的顶部，有一堆大奶酪（每个加1000分）
+
+然而，如果我们仅专注于exploitation，agent 将永远不会到达大奶酪的区域，相反，它将只会利用最近来源的奖励，即使这个来源很小（exploitation）
+
+但是如果agent 做了一点exploration，它就会发现大的奖励（包含大奶酪的格子）
+
+这就是我们称之为探索/利用权衡的策略，我们需要权衡我们探索环境的多少以及利用已知环境信息的多少。
+
+因此我们必须定义一些规则用来帮助我们控制这种权衡。
+
+如果上面的概念依然很混乱，可以考虑一个真实的问题：选择去哪一家餐厅
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/exp_2.jpg)
+
+- Exploitation: 你每天都去同一家你已经知道的很好吃的餐厅，但是冒着错过另一家更好的餐厅的风险
+- Exploration: 尝试以前从未去过的餐厅，尽管冒着可能会有糟糕体验的风险，但是也有可能获得一次更好的美妙体验
+
+**回顾：**
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/expexpltradeoff.jpg)
 
 
+**心得：**
+
+**强化学习中的智能体需要在环境中学习最优策略。但在训练初期,智能体对环境的知识有限。这时它就面临一个问题:是应该“探索”,也就是尝试新的行动,来获取更多环境信息;还是应该“利用”,也就是选择目前看来最优的行动,以获得最大化的即时奖励。**
+
+**探索可以获取新的信息,但不一定能得到最高的奖励;利用可以最大化当前已知信息对应的奖励,但可能陷入局部最优,错过更好的选择。一个好的强化学习算法需要在探索和利用间达到最佳平衡。探索过少会让智能体缺乏新信息;而探索过多又会导致低效。控制这种平衡是一个关键问题。**
+
+**总之,探索/利用权衡决定了智能体收集新信息和利用已有信息的比例。处理好这种权衡对实现最终最优策略至关重要。**
 
 
+## 两个解决 RL 问题的主要方法
 
+我们如何能够构建一个agent能勾选择合适的actions从而最大化累积期望奖励？
+
+### 策略 $\pi $：agent 的大脑
+
+策略 $\pi $是 agent 的大脑，它是一个可以告诉我们在给定的 state 下我们要采取什么样的 action 的函数。因此在一个给定的时间点它定义了 agent 的行为。
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/policy_1.jpg)
+
+这个策略就是我们想要学习的函数，我们的目标是找到最优策略 $\pi^*$，agent 可以通过这个策略采取 action 从而最大化累积期望奖励，我们通过训练的方式找到这个函数 $\pi^*$
+
+有两种方法可以训练 agent 找到最优的策略 $\pi^*$：
+
+- 直接的方法是，直接教给 agent 在给定的 state 下采取什么样的 action：基于策略的方法（Policy-Based Methods）
+- 间接的方法是，教给 agent 哪种 state 更有价值，以及采取哪种 action 可以导致更有价值的 state：基于价值的方法（Value-Based Methods）
+
+### 
 
