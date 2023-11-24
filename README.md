@@ -19,3 +19,7 @@
 - [ ] 在一个具体的game 中实现一个自己无法打败的 agent
 - [ ] 手撕一个用于五子棋game 的 agent
 - [ ] 尝试进行使用RL 在k12 试题标注中的应用
+
+## 学习记录
+
+- [unit-1: introduction](note/unit_1-introduction.md)
