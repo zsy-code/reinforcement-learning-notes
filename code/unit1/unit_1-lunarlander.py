@@ -12,6 +12,8 @@ from optuna_dashboard import run_server
 from huggingface_sb3 import package_to_hub
 
 class EvalSaveCallback(BaseCallback):
+    ''' callback function used to evaluate and save the best model
+    '''
     def __init__(self, eval_env, n_eval, score_threshold, save_path, trial_number=0):
         super().__init__()
         self.eval_env = eval_env
@@ -33,6 +35,8 @@ class EvalSaveCallback(BaseCallback):
         return True
 
 def optimize_params(trial, env_num=None):
+    ''' generate a dict of params(for model & optuna)
+    '''
     params = {
         # 'n_steps': trial.suggest_int('n_steps', 2000, 2500),
         'n_epochs': trial.suggest_int('n_epochs', 10, 20),
@@ -46,6 +50,8 @@ def optimize_params(trial, env_num=None):
 env_id = 'LunarLander-v2'
 env_num = 4
 def objective(trial):
+    ''' optuna function
+    '''
     try:
         # time_steps = trial.suggest_int('time_steps', 1e+4, 1e+6)
         train_env = make_vec_env(env_id, n_envs=env_num)
@@ -72,6 +78,8 @@ def objective(trial):
     
 
 def upload_ppo_hug(model):
+    ''' upload ppo to hugging face
+    '''
     env_id = "LunarLander-v2"
     model_architecture = "PPO"
     repo_id = "zdmcode/ppo-LunarLander-v2"
@@ -90,18 +98,18 @@ def upload_ppo_hug(model):
 
 
 if __name__ == '__main__':
-    # storage = 'sqlite:///db.sqlite3'
-    # study = optuna.create_study(
-    #     storage=storage,
-    #     study_name="lunarlander_with_save_callback_2",
-    #     direction="maximize",
-    #     load_if_exists=True
-    # )
-    # study.optimize(objective, n_trials=20)
+    storage = 'sqlite:///db.sqlite3'
+    study = optuna.create_study(
+        storage=storage,
+        study_name="lunarlander_with_save_callback_2",
+        direction="maximize",
+        load_if_exists=True
+    )
+    study.optimize(objective, n_trials=20)
 
-    # run_server(storage)
-    # print(study.best_params)
+    run_server(storage)
+    print(study.best_params)
 
-    best_model_path = r'models/trial_6_step_205000_281.89743073683985.zip'
-    model = PPO.load(best_model_path)
-    upload_ppo_hug(model)
+    # best_model_path = r'models/trial_6_step_205000_281.89743073683985.zip'
+    # model = PPO.load(best_model_path)
+    # upload_ppo_hug(model)
