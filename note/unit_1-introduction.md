@@ -358,3 +358,20 @@ $v_\pi (s) = \mathbb{E}(R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \cdots | S
 - Value-Based Methods
     1. 另一种解决 RL 问题的方法
     2. 训练一个价值函数而不是一个策略，可以映射每种状态到处于该状态下的期望价值
+
+
+## 进阶阅读
+
+### Deep Reinforcement Learning
+
+- [Reinforcement Learning: An Introduction, Richard Sutton and Andrew G. Barto Chapter 1, 2 and 3](http://incompleteideas.net/book/RLbook2020.pdf)
+
+- [Foundations of Deep RL Series, L1 MDPs, Exact Solution Methods, Max-ent RL by Pieter Abbeel](https://youtu.be/2GwBez0D20A)
+
+- [Spinning Up RL by OpenAI Part 1: Key concepts of RL](https://spinningup.openai.com/en/latest/spinningup/rl_intro.html)
+
+### Gym
+
+- [Getting Started With OpenAI Gym: The Basic Building Blocks](https://blog.paperspace.com/getting-started-with-openai-gym/)
+
+- [Make your own Gym custom environment](https://www.gymlibrary.dev/content/environment_creation/)
