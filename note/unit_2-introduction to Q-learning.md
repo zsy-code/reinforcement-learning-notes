@@ -99,3 +99,46 @@ $Q_{\pi}(s,a) = \mathbf{E}_{\pi}[G_t|S_t=s, A_t=a]$
 这可能是一个计算成本很高的过程，也是贝尔曼方程可以帮助我们的地方。
 
 
+## 贝尔曼方程（The Bellman Equation）：简化我们的价值估计
+
+贝尔曼方程简化了state value/state-action value 的计算
+
+如果我们计算 $V(S_t)$ (the value of a state)，我们需要计算从当前state开始并且后续持续遵循policy所取得的回报（在后面的例子中，我们定义policy为贪婪策略，并且为了简化计算，不对reward进行discount）
+
+因此为了计算 $V(S_t)$ ，我们需要计算期望回报的和：
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/bellman2.jpg)
+
+为了计算state 1的价值：如果agent从这个state开始，并且在每一个time step遵循贪婪策略（采取指向最大state值的行动）所得的reward的和
+
+然后，为了计算 $V(S_{t+1})$ ，我们需要计算从state $S_{t+1}$ 开始计算回报：
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/bellman3.jpg)
+
+为了计算state 2的价值：如果agent从这个state开始，并且在每一个time step遵循贪婪策略（采取指向最大state值的行动）所得的reward的和
+
+你可能会注意到，我们正在重复计算不同state的value，如果你需要为每个state/state-action value做同样的计算，那可能会十分乏味。
+
+我们可以使用贝尔曼方程，而不是计算每个state/state-action pair的期望回报（提示：和动态规划策略很相似）
+
+贝尔曼方程是一个递归方程，我们可以像下面这样考虑任意state的值，而不是从头开始计算每个状态的回报：
+
+t+1 状态的即时奖励（ $R_{t+1}$ ） + 后续state的折扣奖励（ $`\gamma * V(S_{t+1})`$ ），即：
+
+$`V_{\pi}(s) = \mathbf{E}_{\pi}[R_{t+1} + \gamma * V_{\pi }(S_{t+1})|S_t=s]`$
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/bellman4.jpg)
+
+回到上面的例子，对于state 1的value，计算过程就可以化简为：
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/bellman6.jpg)
+
+## 蒙特卡罗和时间差分学习的比较（Monte Carlo vs Temporal Difference Learning）
+
+在深入研究 Q-learning 之前我们需要讨论的最后一件事是两种学习策略。
+
+需要记得 RL agent 是通过和环境交互进行学习，它的思想是，给定经验并且接收奖励，agent就可以更新它的value function 或 policy。
+
+蒙特卡罗和时间差分学习是训练value function/policy function的两种不同策略，它们都是用经验来解决 RL 问题。
+
+一方面，蒙特卡罗使用
