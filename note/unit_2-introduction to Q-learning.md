@@ -264,3 +264,35 @@ Q学习(Q-Learning)是一个基于时序差分(TD)方法训练其动作价值函
 > - "value-based" 价值基础 - 表示Q学习是一个基于状态-动作价值函数(即Q函数)的方法。它试图学习一个表示每个状态下每个动作的长期价值的Q函数。
 > - "uses a TD approach" 使用时序差分方法 - 这意味着Q学习使用TD学习的思想,通过bootstrapping从过去的经验中迭代学习,而不是直接从返回中学习。
 > - "to train its action-value function" 训练其动作价值函数 - 指的是Q学习通过交互环境,采用TD误差来更新和改进其Q函数的估计。Q函数表示最终的训练目标。
+
+Q-learning 是我们用来训练 Q 函数的一个算法。Q函数是一个action-value function，它用于确定处于特定状态并在该状态下采取特定行为的价值。
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-function.jpg)
+
+给定一个state 和 action 输入，Q 函数输出一个state-action value（也叫做Q value）
+
+> The Q comes from “the Quality” (the value) of that action at that state.
+
+回顾一下value 和reward 的不同之处：
+
+- state/state-action 的 value 是agent 从当前state（state-action）开始，且后续遵循policy采取行动所获得的期望累积奖励。
+- reward 是在一个state下执行某个action后从environment中获得的feedback。
+
+在内部，我们的Q函数由Q-table进行编码，该表中的每个单元格对应一个state-action pair value 值，可以认为该表是Q函数的内存/备忘录。
+
+举例：
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Maze-1.jpg)
+
+Q-table 的每个单元格被初始化为0，该表包含每个state-action对应的value。
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Maze-2.jpg)
+
+这里可以看到起始的state value 和 向上的 value都为0
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Maze-3.jpg)
+
+因此：在给定一个state-action时，Q函数将在它的Q-table中查找输出对应值。
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-function-2.jpg)
+
