@@ -44,3 +44,8 @@ huggy的训练目标是尽可能快的并且正确的跑向target，在每个ste
 
 训练的循环过程如下：
 ![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/notebooks/unit-bonus1/huggy-loop.jpg)
+
+训练环境如下图：
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/notebooks/unit-bonus1/training-env.jpg)
+
+这是一个可以随机产生一个 stick 的地方，当 huggy 到达 stick 时，stick 将会在其他地方再次生成，我们为训练创建了多个环境副本，这样可以通过提供更多样性的体验来提高训练速度。
