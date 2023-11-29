@@ -11,7 +11,7 @@
 
 具体来说，我们将：
 - 学习 value-based methods
-- 了解蒙特卡罗（Monte Carlo）和时间差分（Temporal Difference）学习之间的差异
+- 了解蒙特卡罗（Monte Carlo）和时序差分（Temporal Difference）学习之间的差异
 - 学习并实现我们的第一个强化学习算法：Q-learning
 
 ## 两种value-based methods
@@ -133,12 +133,102 @@ $`V_{\pi}(s) = \mathbf{E}_{\pi}[R_{t+1} + \gamma * V_{\pi }(S_{t+1})|S_t=s]`$
 
 ![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/bellman6.jpg)
 
-## 蒙特卡罗和时间差分学习的比较（Monte Carlo vs Temporal Difference Learning）
+## 蒙特卡罗和时序差分学习的比较（Monte Carlo vs Temporal Difference Learning）
 
 在深入研究 Q-learning 之前我们需要讨论的最后一件事是两种学习策略。
 
 需要记得 RL agent 是通过和环境交互进行学习，它的思想是，给定经验并且接收奖励，agent就可以更新它的value function 或 policy。
 
-蒙特卡罗和时间差分学习是训练value function/policy function的两种不同策略，它们都是用经验来解决 RL 问题。
+蒙特卡罗和时序差分学习是训练value function/policy function的两种不同策略，它们都是用经验来解决 RL 问题。
 
-一方面，蒙特卡罗使用
+蒙特卡罗在学习之前使用全部的经验集，而时序差分仅使用一个step（ $S_t, A_t, S_{t+1}, A_{t+1}$ ）进行学习, 下面通过一个value-based method 例子来进行说明。
+
+### 蒙特卡罗：在回合结束时进行学习（Monte Carlo: learning at the end of the episode）
+
+蒙特卡罗会等到回合结束时计算 $G_t$ (return) 并将它用作更新 $V(S_t)$ 的target
+
+所以在更新value function之前需要一个完整的交互过程。
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/monte-carlo-approach.jpg)
+
+举例：
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/MC-2.jpg)
+
+- 总是在同样一个起点开始一个回合
+- agent 通过policy 采取行动，比如，使用一个Epsilon Greedy策略（一种在探索和利用之间交替的策略）
+- 获取到reward 和下一个状态
+- 如果老鼠移动十步以上或者猫吃掉老鼠则终止回合
+- 在回合结束时，会得到一个 State, Action, Reward, Next State的元组列表： [[State tile 3 bottom, Go Left, +1, State tile 2 bottom], [State tile 2 bottom, Go Left, +0, State tile 1 bottom]…]
+- agent 将所有reward进行加和得到 $G_t$
+- 通过公式更新 $V(S_t)$
+- 用这些知识开始新的game
+
+随着执行越来越多的回合，agent将学会表现的越来越好。
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/MC-3p.jpg)
+
+例如，如果我们通过蒙特卡罗训练一个state-value function：
+
+- 初始化value-function，使每个state返回value 0
+- 设置learning_rate = 0.1 & discount_rate = 1(no discount)
+- 老鼠开始探索环境并采取随机action
+- 老鼠行动10 steps 以上，结束回合
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/MC-4p.jpg)
+
+- 得到state, action, rewards, next_state的一个元组列表，需要计算回报 $G_{t=0}$ ，$G_t = R_{t+1} + R_{t+2} + R_{t+3} + \cdots $ （为了简化，不计算折扣奖励）， $G_0 = R_1 + R_2 + R_3 + \cdots $ ， $G_0 = 1+0+0+0+0+0+1+1+0+0 = 3$
+- 现在可以计算新的 $V(S_0)$ ：
+    $V(S_0) = V(S_0) - lr * [G_0-V(S_0)]$
+    $V(S_0) = 0 + 0.1 * [3-0]$
+    $V(S_0) = 0.3$
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/MC-5p.jpg)
+
+### 时序差分学习：在每个step学习（Temporal Difference Learning: learning at each step）
+
+时序差分学习仅等待一次交互（one step） $S_{t+1}$ 来形成TD目标，并且使用 $R_{t+1}$ 和 $`\gamma * V(S_{t+1})`$ 来更新 $V(S_{t})$ 。 这个包含TD的想法是在每个时间步更新 $V(S_{t})$ 。
+
+但因为我们没有经历整个回合，我们就没有 $G_t$ (expected return)。相反，我们通过加和 $R_{t+1}$ 和下一个state的 discounted value来估计 $G_t$ 值。
+
+这个过程被称为引导（bootstrapping），因为时序差分(TD)的更新部分基于现有的估计 $V(S_{t+1})$ 而不是一个完整的样本 $G_t$ 。
+
+$V(S_t) = V(S_t) + \alpha [R_{t+1} + \gamma V(S_{t+1}) - V(S_t)]$
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/TD-1.jpg)
+
+此方法称为 TD(0) 或单步TD（在每个单独step 后更新value function）
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/TD-1p.jpg)
+
+举例：
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/TD-2.jpg)
+
+- 初始化value function对于每个state 返回value 0
+- learning_rate = 0.1, discount_rate = 1
+- 老鼠开始探索环境并采取一个随机行动：向左
+- 得到一个reward $R_{t+1}=1$ 因为它吃到了一块奶酪
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/TD-2p.jpg)
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/TD-3.jpg)
+
+现在可以更新 $V(S_0)$ ：
+
+New $`V(S_0) = V(S_0) + lr * [R_1 + \gamma * V(S_1) - V(S_0)]`$
+
+New $`V(S_0) = 0 + 0.1 * [1 + 1 * 0 - 0]`$
+
+New $`V(S_0) = 0.1`$
+
+现在就可以用更新后的value function 来和环境进行交互了
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/TD-3p.jpg)
+
+### 总结：
+
+- 使用蒙特卡罗，我们从一个完整的回合中更新value function，因此我们使用该回合的实际准确的折扣回报。
+- 使用时序差分，每一步我们更新一次value function，我们将 $G_t$ 替换为叫作 TD target的估计回报。
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Summary.jpg)
