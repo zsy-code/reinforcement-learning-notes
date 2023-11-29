@@ -50,7 +50,7 @@ $v_{\pi }(s)=\mathbb{E}[R_{t+1} + \gamma R_{t+2} + \gamma^2R_{t+3} + \cdots | S_
 
 - 在policy-based training中，最优的策略（$\pi^*$）通过直接训练policy得到
 
-- 在value-based training中，找到一个最优的value function（$Q^*$或$V^*$，后续讨论差异）会引导得到一个最优策略
+- 在value-based training中，找到一个最优的value function（$`Q^*`$ 或 $`V^*`$，后续讨论差异）会引导得到一个最优策略
 
 $\pi^*(s) = \arg \max_a Q^*(s,a)$
 
