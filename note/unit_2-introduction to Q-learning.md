@@ -52,7 +52,7 @@ $v_{\pi }(s)=\mathbb{E}[R_{t+1} + \gamma R_{t+2} + \gamma^2R_{t+3} + \cdots | S_
 
 - 在value-based training中，找到一个最优的value function（$`Q^*`$ 或 $`V^*`$，后续讨论差异）会引导得到一个最优策略
 
-$\pi^*(s) = \arg \max_a Q^*(s,a)$
+$`\pi^*(s) = \arg \max_a Q^*(s,a)`$
 
 事实上，大多数时候我们会采取Epsilon-Greedy Policy来进行探索/利用的权衡
 
@@ -76,7 +76,7 @@ $V_{\pi}(s) = \mathbf{E}_{\pi}[G_t|S_t=s]$
 
 在action-value function中，对于每个state-action pair，action-value function都将会输出在state下开始，采取对应action，并且后续永远遵循该policy所取得的期望回报。
 
-在遵循policy $\pi^*$的基础上，在state s下采取action a所得到的value：
+在遵循policy $`\pi^*`$ 的基础上，在state s下采取action a所得到的value：
 
 ![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/action-state-value-function-1.jpg)
 
