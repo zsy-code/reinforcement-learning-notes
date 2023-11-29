@@ -24,7 +24,7 @@ $v_{\pi }(s)=\mathbb{E}[R_{t+1} + \gamma R_{t+2} + \gamma^2R_{t+3} + \cdots | S_
 
 > 但依照我们的policy采取行动是什么意思呢？毕竟在value-based方法中我们并没有一个policy，因为我们训练的是一个value function而不是一个policy。
 
-要记得一个RL agent的目标是得到一个最优的policy $\pi^*$
+要记得一个RL agent的目标是得到一个最优的policy $`\pi^*`$
 
 为了找到最优的policy，我们学习了两种不同的方法：
 
@@ -48,7 +48,7 @@ $v_{\pi }(s)=\mathbb{E}[R_{t+1} + \gamma R_{t+2} + \gamma^2R_{t+3} + \cdots | S_
 
 所以不同之处在于：
 
-- 在policy-based training中，最优的策略（$\pi^*$）通过直接训练policy得到
+- 在policy-based training中，最优的策略（$`\pi^*`$）通过直接训练policy得到
 
 - 在value-based training中，找到一个最优的value function（$`Q^*`$ 或 $`V^*`$，后续讨论差异）会引导得到一个最优策略
 
