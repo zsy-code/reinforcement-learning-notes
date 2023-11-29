@@ -60,7 +60,7 @@ $`\pi^*(s) = \arg \max_a Q^*(s,a)`$
 
 ### the state-value function
 
-我们在策略$\pi$下编写state-value function如下：
+我们在策略 $\pi$ 下编写state-value function如下：
 
 ![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/state-value-function-1.jpg)
 
