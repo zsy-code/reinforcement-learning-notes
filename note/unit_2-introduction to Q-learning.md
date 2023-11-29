@@ -232,3 +232,35 @@ New $`V(S_0) = 0.1`$
 - 使用时序差分，每一步我们更新一次value function，我们将 $G_t$ 替换为叫作 TD target的估计回报。
 
 ![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Summary.jpg)
+
+
+## 中途回顾
+
+在深入了解 Q-learning 之前，我们总结一下之前学过的内容。
+
+我们有两种类型的value-based function：
+
+- state-value function：如果agent 从给定的state开始并且后续永远遵循policy 采取行动，输出所获得的期望回报。
+
+- action-value function：如果agent 从一个给定的state 和一个给定的action 开始，并且后续永远遵循policy 采取行动，输出所获得的期望回报。
+
+- 在value-based function中，而不是学习policy，我们手动定义一个policy并且学习value function。如果我们有了一个最优的value function，就等于有了一个最优的policy。
+
+这里有两种方法来为一个value function学习policy：
+
+- 蒙特卡罗方法，我们从一个完整的回合中更新value function，因此我们使用该回合的实际准确的折扣回报。
+- 时序差分方法，每一步我们更新一次value function，我们将 $G_t$ 替换为叫作 TD target的估计回报。
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/summary-learning-mtds.jpg)
+
+## 介绍 Q-learning
+
+### 什么是 Q-learning
+
+Q学习(Q-Learning)是一个基于时序差分(TD)方法训练其动作价值函数的离策略(off-policy)基于价值的(value-based)方法
+
+> Q-Learning is an off-policy value-based method that uses a TD approach to train its action-value function
+> - "off-policy" 离策略 - 表示Q学习可以在行动策略和行动价值函数更新策略无关的情况下工作。也就是说,它可以对一个不同的策略学习 optimal Q值。
+> - "value-based" 价值基础 - 表示Q学习是一个基于状态-动作价值函数(即Q函数)的方法。它试图学习一个表示每个状态下每个动作的长期价值的Q函数。
+> - "uses a TD approach" 使用时序差分方法 - 这意味着Q学习使用TD学习的思想,通过bootstrapping从过去的经验中迭代学习,而不是直接从返回中学习。
+> - "to train its action-value function" 训练其动作价值函数 - 指的是Q学习通过交互环境,采用TD误差来更新和改进其Q函数的估计。Q函数表示最终的训练目标。
