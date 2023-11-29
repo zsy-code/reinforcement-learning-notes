@@ -23,3 +23,4 @@
 ## 学习记录
 
 - [unit-1: introduction](note/unit_1-introduction.md)
+- [unit-2: introduction to Q-learning](note/unit_2-introduction%20to%20Q-learning.md)
