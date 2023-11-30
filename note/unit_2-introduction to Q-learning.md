@@ -296,3 +296,11 @@ Q-table 的每个单元格被初始化为0，该表包含每个state-action对�
 
 ![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-function-2.jpg)
 
+回顾一下，Q-learning是这样的RL算法：
+
+- 训练一个Q函数（一个action-value function），它的内部有一个Q-table包含所有的state-action pair values
+- 给定一个state 和action，Q函数将在Q-table中查找相应的value
+- 当训练结束的时候，我们会得到一个最优的Q function，也就意味着我们得到了一个最优的Q-table
+- 如果我们有了一个最优的Q-table，我们就有了一个最优的policy因为我们可以知道在每个state下的最优的action
+
+$`\pi^*(s) = \arg \max_{a} Q^*(s,a)`$
