@@ -44,7 +44,7 @@ $v_{\pi }(s)=\mathbb{E}[R_{t+1} + \gamma R_{t+2} + \gamma^2R_{t+3} + \cdots | S_
 
 给定一个state，我们的action-value function输出当前状态下每个action的价值，然后，我们预定义的贪婪策略将会选择在给定state 或state-action pair情况下产生最高价值的action。
 
-因此，无论你采取什么方法解决问题，你都会有一个策略。在value-base method下，你不用训练一个policy：你的policy只是一个简单的预先指定的函数（比如贪婪策略），它使用value action给出的值来选择对应的action。
+因此，无论你采取什么方法解决问题，你都会有一个策略。在value-base method下，你不用训练一个policy：你的policy只是一个简单的预先指定的函数（比如贪婪策略），它使用value function给出的值来选择对应的action。
 
 所以不同之处在于：
 
