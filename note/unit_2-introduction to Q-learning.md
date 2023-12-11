@@ -304,3 +304,86 @@ Q-table 的每个单元格被初始化为0，该表包含每个state-action对�
 - 如果我们有了一个最优的Q-table，我们就有了一个最优的policy因为我们可以知道在每个state下的最优的action
 
 $`\pi^*(s) = \arg \max_{a} Q^*(s,a)`$
+
+在最开始的时候，Q-table是没有用的，因为它将为我们提供任意值（一般我们会把Q-table初始化为0），但随着agent对环境不断的探索以及我们对Q-table的更新，它将会提供越来越好的最优策略近似值。
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-learning-1.jpg)
+
+### Q-learning 算法
+
+下面是Q-learning的伪代码：
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-learning-2.jpg)
+
+Step 1: 初始化Q-table
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-learning-3.jpg)
+
+我们需要给每个state-action pair初始化 Q-table，大多数时候，我们将初始值设为0.
+
+Step 2: 使用epsilon-greedy 策略选择一个action
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-learning-4.jpg)
+
+epsilon-greedy 是一个可以平衡探索/利用的策略，它的思想是，在初始值 $\varepsilon = 1.0$：
+
+- 对于probability $1-\varepsilon$：我们进行利用（也就是agent 选择state-action值最高的动作）
+
+- 对于probability $\varepsilon$：我们进行探索（尝试随机动作）
+
+在训练开始时，探索的可能性将会非常大因为 $ \varepsilon $ 很高，因此大多数时刻我们进行探索。但随着训练的进行，我们的Q-table的估计变得越来越好，就要逐渐的减小epsilon的值，因为我们将需要更少的探索和更多的利用。
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-learning-5.jpg)
+
+Step 3: 执行 action $ A_{t} $ ，获得reward $ R_{t+1} $ 和 next state $S_{t+1}$
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-learning-6.jpg)
+
+Step 4: 更新 $Q(S_t, A_t)$
+
+在时间差分学习中，我们在每一次交互之后更新policy或者value function（基于我们选择的RL method）
+
+为了达到我们的TD 目标，我们将及时奖励reward $ R_{t+1} $ 和下一状态的折扣价值（通过找到下一状态能够最大化Q-function的动作来计算）进行加和，我们称之为bootstrap。
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-learning-7.jpg)
+
+因此，$ Q(S_{t}, A_{t}) $ 的更新公式就变成了：
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-learning-8.jpg)
+
+这就意味着为了更新 $ Q(S_{t}, A_{t}) $：
+
+- 我们需要 $ S_{t}, A_{t}, S_{t+1}, R_{t+1} $
+
+- 为了更新一个给定的state-action pair的Q-value，我们使用 TD target
+
+我们如何制定 TD target？
+
+- 在执行action $ A_t $ 后我们获取到reward $R_{t+1}$
+
+- 为了得到下一时刻最好的state-action pair的value，我们使用一个贪婪策略来选择下一个最好的action，请注意，这不是epsilon-greedy 策略，它将总是选择最高的state-action value 对应的action
+
+然后当Q-value 更新结束，我们从一个新的状态开始并再次使用epsilon-greedy 策略选择一个action
+
+这就是为什么我们称 Q-learning 是一个离策略（off-policy）的算法
+
+### 离策略（off-policy）vs 策略内（on-policy）
+
+它们的差别很微妙：
+
+- off-policy：使用不同的策略来执行（推理）和更新（训练）
+
+比如，对于 Q-learning，epsilon-greedy 策略（acting policy），它和用来选择最好的下一状态的state-action value 来更新Q-value的greedy策略是不同的，即：
+
+1. action policy：使用源自Q的policy（epsilon-greedy）选择action $ A_t $ 
+
+2. updating policy：$\gamma \mathrm{max}_{a} Q(S_{t+1}, a)$
+
+- on-policy：acting 和 updating 使用相同的策略
+
+比如，对于另一个value-based 算法 Sarsa，使用epsilon-greedy选择下一个action 而不是greedy policy。
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/off-on-3.jpg)
+
+汇总：
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/off-on-4.jpg)
