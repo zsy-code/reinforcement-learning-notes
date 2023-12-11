@@ -359,7 +359,7 @@ Step 4: 更新 $` Q(S_t, A_t) `$
 
 我们如何制定 TD target？
 
-- 在执行action $ A_t $ 后我们获取到reward $` R_{t+1} `$
+- 在执行action $` A_t `$ 后我们获取到reward $` R_{t+1} `$
 
 - 为了得到下一时刻最好的state-action pair的value，我们使用一个贪婪策略来选择下一个最好的action，请注意，这不是epsilon-greedy 策略，它将总是选择最高的state-action value 对应的action
 
