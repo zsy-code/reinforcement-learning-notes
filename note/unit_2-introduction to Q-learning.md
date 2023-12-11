@@ -316,6 +316,7 @@ $`\pi^*(s) = \arg \max_{a} Q^*(s,a)`$
 ![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-learning-2.jpg)
 
 Step 1: 初始化Q-table
+
 ![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-learning-3.jpg)
 
 我们需要给每个state-action pair初始化 Q-table，大多数时候，我们将初始值设为0.
@@ -334,31 +335,31 @@ epsilon-greedy 是一个可以平衡探索/利用的策略，它的思想是，�
 
 ![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-learning-5.jpg)
 
-Step 3: 执行 action $ A_{t} $ ，获得reward $ R_{t+1} $ 和 next state $S_{t+1}$
+Step 3: 执行 action $` A_{t} `$ ，获得reward $` R_{t+1} `$ 和 next state $` S_{t+1} `$
 
 ![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-learning-6.jpg)
 
-Step 4: 更新 $Q(S_t, A_t)$
+Step 4: 更新 $` Q(S_t, A_t) `$
 
 在时间差分学习中，我们在每一次交互之后更新policy或者value function（基于我们选择的RL method）
 
-为了达到我们的TD 目标，我们将及时奖励reward $ R_{t+1} $ 和下一状态的折扣价值（通过找到下一状态能够最大化Q-function的动作来计算）进行加和，我们称之为bootstrap。
+为了达到我们的TD 目标，我们将及时奖励reward $` R_{t+1} `$ 和下一状态的折扣价值（通过找到下一状态能够最大化Q-function的动作来计算）进行加和，我们称之为bootstrap。
 
 ![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-learning-7.jpg)
 
-因此，$ Q(S_{t}, A_{t}) $ 的更新公式就变成了：
+因此，$` Q(S_{t}, A_{t}) `$ 的更新公式就变成了：
 
 ![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-learning-8.jpg)
 
-这就意味着为了更新 $ Q(S_{t}, A_{t}) $：
+这就意味着为了更新 $` Q(S_{t}, A_{t}) `$：
 
-- 我们需要 $ S_{t}, A_{t}, S_{t+1}, R_{t+1} $
+- 我们需要 $` S_{t}, A_{t}, S_{t+1}, R_{t+1} `$
 
 - 为了更新一个给定的state-action pair的Q-value，我们使用 TD target
 
 我们如何制定 TD target？
 
-- 在执行action $ A_t $ 后我们获取到reward $R_{t+1}$
+- 在执行action $ A_t $ 后我们获取到reward $` R_{t+1} `$
 
 - 为了得到下一时刻最好的state-action pair的value，我们使用一个贪婪策略来选择下一个最好的action，请注意，这不是epsilon-greedy 策略，它将总是选择最高的state-action value 对应的action
 
@@ -376,7 +377,7 @@ Step 4: 更新 $Q(S_t, A_t)$
 
 1. action policy：使用源自Q的policy（epsilon-greedy）选择action $ A_t $ 
 
-2. updating policy：$\gamma \mathrm{max}_{a} Q(S_{t+1}, a)$
+2. updating policy：$` \gamma \mathrm{max}_{a} Q(S_{t+1}, a) `$
 
 - on-policy：acting 和 updating 使用相同的策略
 
