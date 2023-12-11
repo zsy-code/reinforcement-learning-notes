@@ -375,7 +375,7 @@ Step 4: 更新 $` Q(S_t, A_t) `$
 
 比如，对于 Q-learning，epsilon-greedy 策略（acting policy），它和用来选择最好的下一状态的state-action value 来更新Q-value的greedy策略是不同的，即：
 
-1. action policy：使用源自Q的policy（epsilon-greedy）选择action $ A_t $ 
+1. action policy：使用源自Q的policy（epsilon-greedy）选择action $` A_t `$ 
 
 2. updating policy：$` \gamma \mathrm{max}_{a} Q(S_{t+1}, a) `$
 
