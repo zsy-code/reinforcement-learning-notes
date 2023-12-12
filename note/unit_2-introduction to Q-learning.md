@@ -388,3 +388,158 @@ Step 4: 更新 $` Q(S_t, A_t) `$
 汇总：
 
 ![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/off-on-4.jpg)
+
+
+## 一个Q-learning示例
+
+为了更好的理解Q-learning算法，让我们来举一个简单的例子：
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Maze-Example-2.jpg)
+
+- 在这个小迷宫中你是一只老鼠，你总是从相同的起点开始行动
+
+- 目标是吃掉右下角的一堆奶酪并避免中毒
+
+- 如果吃到毒药或吃到最大块的奶酪，或者行动超过5个step，则回合结束
+
+- 学习率设为0.1，折扣率设为0.99
+
+奖励函数如下：
+
+- +0：来到一个没有奶酪的地方
+
+- +1：来到一个有小奶酪的地方
+
+- +10：来到有一大堆奶酪的地方
+
+- -10：来到一个有毒药的地方然后死亡
+
+- +0：如果行动超过5步
+
+为了训练agent得到一个最优的policy（右右下），我们使用Q-learning算法
+
+**Step 1: 初始化Q-table**
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Example-1.jpg)
+
+现在，Q-table是无用的，我们需要使用Q-learning算法来训练Q-function
+
+让我们执行两个训练step：
+
+训练步骤1：
+
+**Step 2: 使用epsilon-greedy 策略选择一个action**
+
+因为epsilon 很大（=1.0），因此采取一个随机行动，在本例中，选择向右。
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/q-ex-3.jpg)
+
+**Step 3: 执行Action $` A_t `$，得到 $` R_{t+1} `$ 和 $` S_{t+1} `$**
+
+通过向右走，我们得到了一小块奶酪，因此 $` R_{t+1}=1 `$，并且处于一个新的状态。
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/q-ex-4.jpg)
+
+**Step 4: 更新 $` Q(S_{t}, A_{t}) `$**
+
+使用下面公式更新 $` Q(S_{t}, A_{t}) `$
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/q-ex-5.jpg)
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Example-4.jpg)
+
+训练步骤2：
+
+**Step 2: 使用epsilon-greedy 策略选择一个action**
+
+我们再次选择一个随机的action，因为epsilon=0.99依然很大（我们需要逐渐一点点的减小epsilon，因为我们希望随着训练执行，进行的探索越来越少）
+
+我们选择向下的action，这并不是一个好的action因为它导致的了死亡
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/q-ex-6.jpg)
+
+**Step 3: 执行Action $` A_t `$，得到 $` R_{t+1} `$ 和 $` S_{t+1} `$**
+
+由于吃到了毒药，因此 $`R_{t+1}=-10`$ ，老鼠死亡
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/q-ex-7.jpg)
+
+**Step 4: 更新 $` Q(S_{t}, A_{t}) `$**
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/q-ex-8.jpg)
+
+因为角色死亡，所以要开始一个新的回合，通过两次训练step，agent变得更加智能了。
+
+随着我们继续探索和利用环境，并使用TD target更新Q值，Q-table将会给我们一个越来越好的近似值，在训练结束时，我们将会得到一个最优的Q-function估计
+
+
+## Q-learning回顾
+
+Q-learning是这样的强化学习算法：
+
+- 通过一个包含所有state-action value的Q-table训练Q function（一个在内部存储器中编码的action-value function）
+
+- 给定一个state和action，Q-function将从Q-table中查找对应的值
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-function-2.jpg)
+
+- 训练完成后，我们就有了一个最优的Q-function，或者等价的，得到了一个最优的Q-table
+
+- 一旦我们有了一个最优的Q-function，我们就有了一个最优的policy，因为我们知道，对于每个state，都会采取最优的action
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/link-value-policy.jpg)
+
+但是在训练开始时，Q-table是无用的，因为我们给Q-table提供了任意值进行初始化（大多数时候初始化为0），但随着对环境的探索以及对Q-table的不断更新，它将给我们提供越来越好的近似值。
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/notebooks/unit2/q-learning.jpeg)
+
+Q-learning的伪代码如下：
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-learning-2.jpg)
+
+## 术语
+
+寻找最优策略的方法：
+
+- policy-based 方法：该策略通常使用神经网络进行训练，以选择在给定状态下采取什么操作。在这种情况下，神经网络输出agent应该采取的action，而不是使用值函数。根据环境收到的经验，神经网络将重新调整并提供更好的action。
+
+- value-based 方法：在这种情况下，训练价值函数来输出代表我们策略的state或state-action pair的值。但是，该值并没有定义agent应该采取什么操作。相反，我们需要在给定值函数的输出的情况下指定agent的行为。例如，我们可以决定采用一项策略来采取总是带来最大奖励的action（贪婪策略）。总之，该策略是贪婪策略（或用户采取的任何决策），它使用价值函数的值来决定要采取的操作。
+
+在value-based method中，可以发现两种主要策略：
+
+- state value function: 对于每个状态，state value函数是如果agent从该状态开始并遵循策略直到结束的预期回报。
+
+- state-action value function: 与state value函数相反，如果agent在该状态下启动、采取该操作，然后永远遵循该策略，则操作值会为每个状态和操作对计算预期回报。
+
+
+epsilon-greedy 策略：
+
+- 强化学习中使用的常见策略涉及平衡探索和利用。
+
+- 以 1-epsilon 的概率选择具有最高预期奖励的操作。
+
+- 选择概率为 epsilon 的随机操作。
+
+- Epsilon 通常会随着时间的推移而减少，以将重点转向利用。
+
+greedy 策略：
+
+- 涉及始终根据当前对环境的了解，选择有望带来最高回报的行动。
+
+- 总是选择期望奖励最高的行动。
+
+- 不包括任何探索。
+
+- 在不确定或未知最佳行动的环境中可能是不利的。
+
+off-policy 与 on-policy 算法：
+
+- off-policy 算法：在训练时和推理时使用不同的策略
+
+- on-policy 算法：在训练和推理过程中使用相同的策略
+
+蒙特卡罗和时间差分学习策略：
+
+- 蒙特卡罗（MC）：在回合结束时学习。使用蒙特卡罗，我们等到回合结束，然后根据完整的回合更新价值函数（或策略函数）。
+
+- 时间差分（TD）：在每一步之后学习。通过时间差异学习，我们可以在每一步更新价值函数（或策略函数），而不需要完整的回合。
