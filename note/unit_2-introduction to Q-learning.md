@@ -543,3 +543,15 @@ off-policy 与 on-policy 算法：
 - 蒙特卡罗（MC）：在回合结束时学习。使用蒙特卡罗，我们等到回合结束，然后根据完整的回合更新价值函数（或策略函数）。
 
 - 时间差分（TD）：在每一步之后学习。通过时间差异学习，我们可以在每一步更新价值函数（或策略函数），而不需要完整的回合。
+
+## 进阶阅读
+
+### 蒙特卡罗和时间差分
+
+- [Why do temporal difference (TD) methods have lower variance than Monte Carlo methods?](https://stats.stackexchange.com/questions/355820/why-do-temporal-difference-td-methods-have-lower-variance-than-monte-carlo-met)
+- [When are Monte Carlo methods preferred over temporal difference ones?](https://stats.stackexchange.com/questions/336974/when-are-monte-carlo-methods-preferred-over-temporal-difference-ones)
+
+### Q-learning
+
+- [Reinforcement Learning: An Introduction, Richard Sutton and Andrew G. Barto Chapter 5, 6 and 7](http://incompleteideas.net/book/RLbook2020.pdf)
+- [Foundations of Deep RL Series, L2 Deep Q-Learning by Pieter Abbeel](https://youtu.be/Psrhxy88zww)
