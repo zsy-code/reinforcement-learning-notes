@@ -24,3 +24,4 @@
 
 - [unit-1: introduction](note/unit_1-introduction.md)
 - [unit-2: introduction to Q-learning](note/unit_2-introduction%20to%20Q-learning.md)
+- [unit-3: deep Q-learning with atari games](note/unit_3-deep%20Q-learning%20with%20atari%20games.md)
